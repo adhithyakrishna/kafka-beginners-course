@@ -1,20 +1,14 @@
-package com.adhithya.kafka;
+package com.adhithya.kafka.producer;
 
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ProducerDemoWithCallback {
+public class ProducerDemo {
 	public static void main(String args[]) {
-		
-		final Logger logger = LoggerFactory.getLogger(ProducerDemoWithCallback.class);
 		// create producer properties
 		Properties properties = new Properties();
 		String bootstrapServers = "127.0.0.1:9092";
@@ -41,21 +35,7 @@ public class ProducerDemoWithCallback {
 		
 		//sending data is asynchronous
 		ProducerRecord<String, String> record = new ProducerRecord<String, String>("first_topic", "hello world");		
-		producer.send(record, new Callback() {
-			//executes everytime a record is being sent successfully or an exception is thrown
-			public void onCompletion(RecordMetadata metadata, Exception exception) {
-				if(exception==null)
-				{
-					logger.info("Recieved new metadat : \n" + "Topic :" + metadata.topic() +", ProducerDemo.javaPartition :" + metadata.partition() + ", Offset : " + metadata.offset() + ", Time stamp : " +metadata.timestamp());
-					// record sent successfully
-				}
-				else {
-					//error has to be dealt
-					logger.error("Error while producing", exception);
-				}
-				
-			}
-		});
+		producer.send(record);
 		//flush data
 		producer.flush();
 		//flush and close producer

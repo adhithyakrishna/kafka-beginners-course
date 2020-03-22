@@ -1,4 +1,4 @@
-package com.adhithya.kafka;
+package com.adhithya.kafka.producer;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
